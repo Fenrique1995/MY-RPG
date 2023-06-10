@@ -6,4 +6,5 @@
  *
  */
 module MY_RPG {
+	requires java.desktop;
 }
