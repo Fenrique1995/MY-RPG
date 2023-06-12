@@ -6,6 +6,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+/*The implements Runnable allows to use threads and the run to verify*/
 public class Game extends Canvas implements Runnable {
 
 	/*
@@ -25,6 +26,8 @@ public class Game extends Canvas implements Runnable {
 	/* Here i determinate the height and width of the window. Also the name */
 	private static final int WIDTH = 800;
 	private static final int HEIGHT = 600;
+	/* volatile prevents the variable onTheRun from getting corrupt */
+	private static volatile boolean onTheRun = false;
 
 	private static final String NAME = "Game";
 
@@ -60,19 +63,35 @@ public class Game extends Canvas implements Runnable {
 		/* //////////////////////////////////////////////////////////////// */
 	}
 
-	private void start() {
+	/*
+	 * by adding synchronized, it makes sure both methods cant alter the same
+	 * variable at the same time
+	 */
+	private synchronized void start() {
+		onTheRun = true;
+
 		thread = new Thread(this, "Graphics");
 		thread.start();
 	}
 
-	private void stop() {
+	private synchronized void stop() {
+		onTheRun = false;
 
+		try {
+			/* join makes sure to stop the thread when this finish */
+			thread.join();
+		} catch (InterruptedException e) {
+			e.printStackTrace();
+			/* the catch will print the error (Exception in Java) */
+		}
 	}
 
 	@Override
 	public void run() {
-		// TODO Auto-generated method stub
-		System.out.println("Thread 2 is executing");
+		while (onTheRun) {
+
+		}
+
 	}
 
 }
