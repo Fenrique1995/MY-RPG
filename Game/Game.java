@@ -6,7 +6,7 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
-public class Game extends Canvas {
+public class Game extends Canvas implements Runnable {
 
 	/*
 	 * ///////////////////////////// este es un identificador de de serie, esto
@@ -30,8 +30,14 @@ public class Game extends Canvas {
 
 	/* ///////////// */
 	private static JFrame window;
+	private static Thread thread;
 
 	private Game() {
+		/* //////////////////////////////////////////////////////////////// */
+		/*
+		 * opens the window with the designated width and height and prevents the user
+		 * from alter the properties of the window
+		 */
 		setPreferredSize(new Dimension(WIDTH, HEIGHT));
 
 		window = new JFrame(NAME);
@@ -42,10 +48,31 @@ public class Game extends Canvas {
 		window.pack();
 		window.setLocationRelativeTo(null);
 		window.setVisible(true);
+
+		/* //////////////////////////////////////////////////////////////// */
 	}
 
 	public static void main(String[] args) {
+		/* //////////////////////////////////////////////////////////////// */
+		/* Starts the game */
 		Game game = new Game();
+		game.start();
+		/* //////////////////////////////////////////////////////////////// */
+	}
+
+	private void start() {
+		thread = new Thread(this, "Graphics");
+		thread.start();
+	}
+
+	private void stop() {
+
+	}
+
+	@Override
+	public void run() {
+		// TODO Auto-generated method stub
+		System.out.println("Thread 2 is executing");
 	}
 
 }
