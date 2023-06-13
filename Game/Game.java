@@ -31,6 +31,9 @@ public class Game extends Canvas implements Runnable {
 
 	private static final String NAME = "Game";
 
+	private static int ups = 0;
+	private static int fps = 0;
+
 	/* ///////////// */
 	private static JFrame window;
 	private static Thread thread;
@@ -86,10 +89,52 @@ public class Game extends Canvas implements Runnable {
 		}
 	}
 
+	private void update() {
+		/* here updates the variables of the game */
+		ups++;
+
+	}
+
+	private void look() {
+		/* here are all the methods need for the draw of the graphics */
+		fps++;
+	}
+
 	@Override
 	public void run() {
-		while (onTheRun) {
+		/* this method relies on the microprocessor */
+		/* System.nanoTime(); */
+		final int NS_PER_SECOND = 1000000000;
+		final byte UPS_OBJECTIVE = 60;
+		final double NS_PER_UPDATES = NS_PER_SECOND / UPS_OBJECTIVE;
 
+		long referenceUpdate = System.nanoTime();
+		long referenceCounter = System.nanoTime();
+
+		double timeTranscurred;
+		double delta = 0;
+
+		while (onTheRun) {
+			final long startLoop = System.nanoTime();
+
+			timeTranscurred = startLoop - referenceUpdate;
+			referenceUpdate = startLoop;
+
+			delta += timeTranscurred / NS_PER_UPDATES;
+
+			while (delta >= 1) {
+				update();
+				delta--;
+			}
+
+			look();
+
+			if (System.nanoTime() - referenceCounter > NS_PER_SECOND) {
+				window.setTitle(NAME + " || UPS " + ups + " || FPS: " + fps);
+				ups = 0;
+				fps = 0;
+				referenceCounter = System.nanoTime();
+			}
 		}
 
 	}
