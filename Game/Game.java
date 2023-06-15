@@ -1,4 +1,4 @@
-package Game;
+package game;
 
 import java.awt.BorderLayout;
 import java.awt.Canvas;
@@ -130,7 +130,7 @@ public class Game extends Canvas implements Runnable {
 			look();
 
 			if (System.nanoTime() - referenceCounter > NS_PER_SECOND) {
-				window.setTitle(NAME + " || UPS " + ups + " || FPS: " + fps);
+				window.setTitle(NAME + " || UPS: " + ups + " || FPS: " + fps);
 				ups = 0;
 				fps = 0;
 				referenceCounter = System.nanoTime();
