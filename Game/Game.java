@@ -6,6 +6,8 @@ import java.awt.Dimension;
 
 import javax.swing.JFrame;
 
+import controls.Keyboard;
+
 /*The implements Runnable allows to use threads and the run to verify*/
 public class Game extends Canvas implements Runnable {
 
@@ -37,8 +39,12 @@ public class Game extends Canvas implements Runnable {
 	/* ///////////// */
 	private static JFrame window;
 	private static Thread thread;
+	private static Keyboard keys;
 
 	private Game() {
+
+		keys = new Keyboard();
+		addKeyListener(keys);
 		/* //////////////////////////////////////////////////////////////// */
 		/*
 		 * opens the window with the designated width and height and prevents the user
@@ -90,6 +96,15 @@ public class Game extends Canvas implements Runnable {
 	}
 
 	private void update() {
+		keys.update();
+
+		/*
+		 * this if is here to verify if the keys works///// if (keys.up) {
+		 * System.out.println("it works up"); } if (keys.down) {
+		 * System.out.println("it works down"); } if (keys.left) {
+		 * System.out.println("it works left"); } if (keys.right) {
+		 * System.out.println("it works right"); }
+		 */
 		/* here updates the variables of the game */
 		ups++;
 
@@ -113,6 +128,8 @@ public class Game extends Canvas implements Runnable {
 
 		double timeTranscurred;
 		double delta = 0;
+
+		requestFocus();
 
 		while (onTheRun) {
 			final long startLoop = System.nanoTime();
